@@ -62,6 +62,7 @@ def main():
     # Set the prompt that the ChatGPT model will use to generate responses
     prompt = console.input("\n[bold white3]>>> Enter TEXT Prompt or Some Question : \n")
     print(Fore.LIGHTBLUE_EX, Style.DIM + "\nPlease Wait The Answer >>>")
+    logger.info("\n\n" + prompt + "\n")
 
     # Use the OpenAI `Completion` API to generate responses to the prompt
     response = openai.Completion.create(
