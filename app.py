@@ -2,9 +2,26 @@ import openai
 import random
 from configparser import ConfigParser
 from rich.console import Console
+import logging
+from logging.handlers import RotatingFileHandler
 import colorama
 from colorama import Fore, Back, Style, init
 init()
+
+# Set up logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+# Create a rotating file handler
+handler = RotatingFileHandler("answers.log", maxBytes=1000000, backupCount=5)
+handler.setLevel(logging.INFO)
+
+# Create a formatter and add it to the handler
+formatter = logging.Formatter("%(asctime)s - %(message)s")
+handler.setFormatter(formatter)
+
+# Add the handler to the logger
+logger.addHandler(handler)
 
 console = Console()
 
@@ -40,10 +57,11 @@ print(Style.RESET_ALL)
 openai.api_key = dbconf.get("SETTING","API_KEY")
 #print("\n")
 
+
 def main():
     # Set the prompt that the ChatGPT model will use to generate responses
     prompt = console.input("\n[bold white3]>>> Enter TEXT Prompt or Some Question : \n")
-    print(Fore.LIGHTBLUE_EX, Style.DIM + "\nPlease Wait The Anwser >>>")
+    print(Fore.LIGHTBLUE_EX, Style.DIM + "\nPlease Wait The Answer >>>")
 
     # Use the OpenAI `Completion` API to generate responses to the prompt
     response = openai.Completion.create(
@@ -57,7 +75,7 @@ def main():
     for i, response in enumerate(response.choices[0].text.split("\n")):
         print(Fore.LIGHTMAGENTA_EX, Style.BRIGHT + "")
         print(f"{response}")
-    #print
+        logger.info(response)
 
 if __name__ == "__main__":
     while True:
