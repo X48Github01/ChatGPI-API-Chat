@@ -1,0 +1,7 @@
+openai
+random
+configparser
+rich.console
+logging
+logging.handlers
+colorama
